@@ -1,0 +1,144 @@
+# -*- coding: utf-8 -*-
+class GamesController < ApplicationController
+  before_filter :check_regular_user
+  before_filter :game_in
+  
+  COUNT = 10
+  
+  def init_game(user_id)
+    
+    gselect_pos = GameUserPersonPosition.where(:user_id => user_id)[0]
+    start_pos = gselect_pos.start
+    end_pos = gselect_pos.end
+    persons = Person.where("id >= ? and id <= ?", start_pos, end_pos)
+    
+    tmp = []
+    persons.map { |v| tmp << v.id }
+    
+    variants = tmp.shuffle.in_groups(tmp.size/4)
+    i = 0
+    variants.map { |v|
+           GameAnswer.create(:answer_id => v[0],
+                             :var1 => v[1],
+                             :var2 => v[2],
+                             :var3 => v[3])
+	   i += 1
+    }
+  end
+  
+
+
+  def index              
+    user_id = @current_user.id
+    @message = 0
+    if Person.count < 40
+            render :text=>"Недостаточное количество актеров!", :layout => 'application'
+    else
+        if GameUserPersonPosition.where(:user_id => user_id).size == 0
+           GameUserPersonPosition.create(:user_id => user_id, :start => 1, :end => COUNT*4)
+        end
+        if GameAnswer.count != 0 and params[:next] != nil and params[:next] != ''
+          		GameAnswer.first.delete
+        end
+        if (GameScore.where(:user_id => user_id)).size == 0             
+        	   GameScore.create(:user_id => user_id, :score => 0)
+	      end
+	      if params[:id] != nil and
+       	  	 params[:id] != '' and
+       	  	 params[:qid] != nil and
+       	   	 params[:qid] != ''
+
+        	if (GameAnswer.where(:id => params[:qid])).size != 0       
+	          	q = GameAnswer.find(params[:qid])        
+		          user_answer = GamePersonId.find(params[:id])          
+		          if q.answer_id == user_answer.person_id
+        		    @message = 1
+        		    add_scores(user_id)
+        		  else				
+        		    @message = 2
+        		  end          
+        	  GamePersonId.delete_all if GamePersonId.count > 30 
+        	  GameAnswer.delete(params[:qid])        
+        	end
+	      end
+    
+        @user_login = @current_user.login
+        @user_scores = (GameScore.find(user_id)).score
+        if (GameAnswer.count == 0) 
+          gpos = GameUserPersonPosition.where(:user_id => user_id)[0]
+          inc_num = COUNT*4
+          if(gpos.start + inc_num >= Person.last.id)          
+            gpos.start = 1
+            gpos.end = inc_num
+          else          
+            gpos.increment(:start, COUNT*4)
+            gpos.increment(:end, COUNT*4)
+          end
+          gpos.save
+          init_game(user_id)  
+        end
+        question = GameAnswer.first            
+        @question_id = question.id        
+        actor_guess = GamePersonId.create( :person_id => question.answer_id)        
+        actor1 = GamePersonId.create( :person_id => question.var1)
+        actor2 = GamePersonId.create( :person_id => question.var2)
+        actor3 = GamePersonId.create( :person_id => question.var3)
+        @actor_guess_films = []
+        @actor_guess_films_str = ""
+
+        actor_guess_obj = Person.find(question.answer_id)
+        if actor_guess_obj.male == true
+                 @actor_guess_films_str = "снимался в "
+        else
+            	 @actor_guess_films_str = "снималacь в "
+        end
+	if actor_guess_obj.films.size > 1
+             @actor_guess_films_str += "фильмах: "
+        else
+             @actor_guess_films_str += "фильме: "
+        end
+        if actor_guess_obj.films.size == 0
+               films_director = Film.where(:director_id => actor_guess_obj.id)
+              if films_director.size == 0
+                 @actor_guess_films_str = "нет подсказки"
+              else
+                films_director.map do |f|
+                  @actor_guess_films << f.name                  
+                end
+                @actor_guess_films_str = "режиссер "
+                if films_director.size == 1
+                  @actor_guess_films_str += "фильма: "
+                else
+                  @actor_guess_films_str += "фильмов: "           
+                end
+                @actor_guess_films = @actor_guess_films.join(", ")
+              end
+        else
+           actor_guess_obj.films.map do |f|
+              @actor_guess_films << f.name
+           end
+           @actor_guess_films = @actor_guess_films.join(", ")
+        end                
+       
+
+        @actor_guess_avatar = actor_guess_obj.avatar.url(:medium)
+        @actor_guess_name = actor_guess_obj.name
+        @variants = [actor_guess, actor1, actor2, actor3].shuffle
+        @names, @ids = [], []
+        @variants.map do |v|
+            @names << Person.find(v.person_id).name
+            @ids << v.id
+        end        
+        respond_to do |format|
+          format.html # show.html.erb
+        end
+    end
+  end
+    
+  
+  def add_scores(user_id)
+    gscores = GameScore.where(:user_id => user_id)[0]
+    gscores.increment(:score)    
+    gscores.save
+  end
+end

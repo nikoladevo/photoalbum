@@ -1,0 +1,8 @@
+%h1 Картинки
+-@images.each do |image|
+  =render 'images/image', :image => image
+  <a id="single_image" href=
+  =link_to '',image.img.url(:medium)
+=paginate @images
+-if @current_user && @current_user.admin?
+  =link_to "Добавить",new_image_path

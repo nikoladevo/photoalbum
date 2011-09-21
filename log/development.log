@@ -1,0 +1,47 @@
+
+
+Started GET "/albums/1" for 127.0.0.1 at Wed Sep 21 15:26:36 +0400 2011
+  Processing by AlbumsController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mSQL (0.8ms)[0m  [1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [1m[35mUser Load (0.6ms)[0m  SELECT "users".* FROM "users" WHERE "users"."id" = 2 LIMIT 1
+  [1m[36mAlbum Load (0.5ms)[0m  [1mSELECT "albums".* FROM "albums" WHERE "albums"."id" = 1 LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT "users".* FROM "users" WHERE "users"."id" = 2 LIMIT 1
+  [1m[36mAlbum Load (0.4ms)[0m  [1mSELECT "albums"."id" FROM "albums" WHERE "albums"."id" = 1 AND ("albums".user_id = 2) LIMIT 1[0m
+  [1m[35mImage Load (1.0ms)[0m  SELECT "images".* FROM "images" WHERE "images"."album_id" = 1 ORDER BY mark DESC LIMIT 25 OFFSET 0
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."id" = 2 LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT "albums"."id" FROM "albums" WHERE "albums"."id" = 1 AND ("albums".user_id = 2) LIMIT 1
+  [1m[36mSQL (0.3ms)[0m  [1mSELECT COUNT(*) FROM "histories" WHERE ("histories".album_id = 1)[0m
+  [1m[35mCACHE (0.1ms)[0m  SELECT "users".* FROM "users" WHERE "users"."id" = 2 LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT "albums"."id" FROM "albums" WHERE "albums"."id" = 1 AND ("albums".user_id = 2) LIMIT 1[0m
+  [1m[35mCACHE (0.2ms)[0m  SELECT "users".* FROM "users" WHERE "users"."id" = 2 LIMIT 1
+  [1m[36mCACHE (0.1ms)[0m  [1mSELECT "albums"."id" FROM "albums" WHERE "albums"."id" = 1 AND ("albums".user_id = 2) LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT "albums".* FROM "albums" WHERE "albums"."id" = 1 LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."id" = 2 LIMIT 1[0m
+  [1m[35mCACHE (0.9ms)[0m  SELECT "albums"."id" FROM "albums" WHERE "albums"."id" = 1 AND ("albums".user_id = 2) LIMIT 1
+  [1m[36mCACHE (0.1ms)[0m  [1mSELECT "albums".* FROM "albums" WHERE "albums"."id" = 1 LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT "users".* FROM "users" WHERE "users"."id" = 2 LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT "albums"."id" FROM "albums" WHERE "albums"."id" = 1 AND ("albums".user_id = 2) LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT "users".* FROM "users" WHERE "users"."id" = 2 LIMIT 1
+  [1m[36mCACHE (0.1ms)[0m  [1mSELECT "albums"."id" FROM "albums" WHERE "albums"."id" = 1 AND ("albums".user_id = 2) LIMIT 1[0m
+Rendered images/_image.html.haml (85.4ms)
+  [1m[35mCACHE (0.1ms)[0m  SELECT "albums".* FROM "albums" WHERE "albums"."id" = 1 LIMIT 1
+  [1m[36mCACHE (2.4ms)[0m  [1mSELECT "users".* FROM "users" WHERE "users"."id" = 2 LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT "albums"."id" FROM "albums" WHERE "albums"."id" = 1 AND ("albums".user_id = 2) LIMIT 1
+  [1m[36mCACHE (0.1ms)[0m  [1mSELECT "albums".* FROM "albums" WHERE "albums"."id" = 1 LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT "users".* FROM "users" WHERE "users"."id" = 2 LIMIT 1
+  [1m[36mCACHE (0.1ms)[0m  [1mSELECT "albums"."id" FROM "albums" WHERE "albums"."id" = 1 AND ("albums".user_id = 2) LIMIT 1[0m
+  [1m[35mCACHE (0.0ms)[0m  SELECT "users".* FROM "users" WHERE "users"."id" = 2 LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT "albums"."id" FROM "albums" WHERE "albums"."id" = 1 AND ("albums".user_id = 2) LIMIT 1[0m
+Rendered images/_image.html.haml (101.3ms)
+DEPRECATION WARNING: - style block helpers are deprecated. Please use =. (called from _app_views_albums_show_html_haml__282970400__613801498_0 at /home/nikolay/Desktop/photoalbum/app/views/albums/show.html.haml:43)
+  [1m[35mSQL (0.7ms)[0m  SELECT COUNT(*) FROM "images" WHERE "images"."album_id" = 1
+Rendered layouts/_tray.haml (12.1ms)
+Rendered layouts/_menu.haml (7.5ms)
+Rendered layouts/_aside.haml (2.9ms)
+Rendered layouts/_footer.haml (4.5ms)
+Rendered albums/show.html.haml within layouts/application (561.6ms)
+Completed 200 OK in 1106ms (Views: 570.5ms | ActiveRecord: 8.6ms)

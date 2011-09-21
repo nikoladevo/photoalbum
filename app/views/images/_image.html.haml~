@@ -1,0 +1,19 @@
+-album = Album.find(image.album_id)
+=f.check_box "#{image.id}" if album.access?(@current_user)
+%br
+-if Album.find(image.album_id).access?(@current_user)
+  =link_to 'использовать как обложку', change_cover_url(image.album_id, image.id)
+%br
+=link_to '+', mark_add_url(image), :style => "text-decoration: none;"
+=link_to '-', mark_sub_url(image), :style => "text-decoration: none;"
+%br
+-img_url = image.img.url(:medium)
+-exif = image.get_exif
+=link_to image_tag(image.img? ? image.img.url(:thumb) : 'video_thumb.png', :alt => ""), image.img.url(:medium),
+        :class => "group", :alt => "", :title => "Файл: #{image.img_file_name}<br><b style ='font-size: 10px;'>Exif: #{exif}</b>",
+        :rel => "group"
+%br
+рейтинг: 
+=image.mark
+%br
+=link_to  'удалить', image, :confirm => 'Вы уверены?', :method => :delete, :style => "text-decoration: none;"

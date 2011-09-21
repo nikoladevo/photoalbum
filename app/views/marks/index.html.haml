@@ -1,0 +1,23 @@
+%h1 Listing marks
+
+%table
+  %tr
+    %th User
+    %th Image
+    %th Mark
+    %th
+    %th
+    %th
+
+  - @marks.each do |mark|
+    %tr
+      %td= mark.user_id
+      %td= mark.image_id
+      %td= mark.mark
+      %td= link_to 'Show', mark
+      %td= link_to 'Edit', edit_mark_path(mark)
+      %td= link_to 'Destroy', mark, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Mark', new_mark_path

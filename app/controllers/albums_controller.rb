@@ -1,0 +1,126 @@
+class AlbumsController < ApplicationController
+  # GET /albums  
+  # GET /albums.xml
+  before_filter :check_regular_user 
+  
+  def index      
+    user = @current_user
+    @users_albums = User.where("id != ?", user.id)
+    @my_albums = user.albums.page(params[:page])
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @albums }
+    end
+  end
+
+  def change_cover
+    a = Album.find(params[:id])
+    if !a.access?(@current_user.id)
+          render :text=>"Чужой альбом редактировать нельзя!", :layout => 'application'
+          return    
+    end
+    i = Image.find(params[:image_id])
+    a.cover = i.img
+    a.save    
+    a.histories.create(:event => "изменена обложка на #{i.img_file_name}")   
+    redirect_to album_path(a), :notice => "Обложка альбома изменена"
+  end
+
+  # GET /albums/1
+  # GET /albums/1.xml
+  def show
+    @album = Album.find(params[:id]) 
+    @album_images = Image.where(:album_id => @album.id).order("mark DESC").page(params[:page])
+    
+    respond_to do |format|
+      format.html # show.html.erb
+      format.xml  { render :xml => @post.to_xml(:include => :images) }
+      format.json  { render :json => @post.to_json(:include => :images) }
+    end
+  end
+
+  # GET /albums/new
+  # GET /albums/new.xml
+  def new    
+    @album = Album.new(params[:album])
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.xml  { render :xml => @album }
+    end
+  end
+
+  # GET /albums/1/edit
+  def edit
+    @album = Album.find(params[:id])    
+    if !@album.access?(@current_user.id)
+         render :text=>"Чужой альбом редактировать нельзя!", :layout => 'application'
+    end
+  end
+
+  # POST /albums
+  # POST /albums.xml
+  def create
+    @album = Album.new(params[:album])    
+    @album.user_id = @current_user.id    
+    respond_to do |format|      
+      if @album.save         
+        dir_path = "#{RAILS_ROOT}/public/uploads/#{@current_user.login}/#{@album.id}" 
+        if Dir[dir_path].size == 0
+           Dir.mkdir(dir_path)
+        end
+        format.html { redirect_to(@album, :notice => 'Альбом создан') }
+        format.xml  { render :xml => @album, :status => :created, :location => @album }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @album.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  # PUT /albums/1
+  # PUT /albums/1.xml
+  def update
+    @album = Album.find(params[:id])
+    if !@album.access?(@current_user.id)
+         render :text=>"Чужой альбом редактировать нельзя!", :layout => 'application'
+         return
+    end
+    respond_to do |format|
+      if @album.update_attributes(params[:album])
+        format.html { redirect_to(@album, :notice => 'Альбом обновлен') }
+        format.xml  { head :ok }
+      else
+        format.html { render :action => "edit" }
+        format.xml  { render :xml => @album.errors, :status => :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /albums/1
+  # DELETE /albums/1.xml
+  def destroy
+    @album = Album.find(params[:id])
+    if !@album.access?(@current_user.id)
+         render :text=>"Чужой альбом редактировать нельзя!", :layout => 'application'
+         return
+    end
+      @album.destroy
+      respond_to do |format|
+         format.html { redirect_to albums_url, :notice => "Альбом удален" }
+         format.xml  { head :ok }
+      end
+  end
+ 
+
+  def clean_history    
+    album = Album.find(params[:id])
+    if !album.access?(@current_user.id)
+         render :text=>"Чужой альбом редактировать нельзя!", :layout => 'application'
+         return
+    end
+    album.histories.delete_all
+    redirect_to album_url(album)
+  end
+    
+end

@@ -1,0 +1,151 @@
+.field_with_errors {
+    padding: 2px;
+    background-color: #FEEBEB;
+    display: table;
+}
+
+#error_explanation {
+    width: 450px;
+    border: 2px solid #FFAEAE;
+    padding: 7px;
+    padding-bottom: 0;
+    margin-bottom: 20px;
+    background-color: #f0f0f0;
+}
+
+#error_explanation h2 {
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 5px 5px 15px;
+    font-size: 12px;
+    margin: -7px;
+    margin-bottom: 0px;
+    color: #fff;
+}
+
+#error_explanation ul li {
+    font-size: 12px;
+    list-style: square;
+}
+
+.field,.actions{
+    padding:10px 0;
+}
+
+.left{
+    float:left;
+    padding: 5px 20px 5px 5px;
+}
+.right{
+    float:right;
+}
+.col{
+    overflow:hidden;
+}
+
+.clear{
+    clear:both;
+}
+
+.film,.person{
+    border:1px solid #dedede;
+    padding:3px;
+    margin:2px 0;
+}
+
+.game_avatar{
+   border: 5px solid #0085CC;
+   -webkit-border-radius: .4em;
+   -moz-border-radius: .4em;
+   border-radius: .4em;    
+}
+
+.game {
+   color: #000;
+   background: #0085CC;
+   width: 360px;
+    border: 5px solid #333;
+   -webkit-border-radius: .4em;
+   -moz-border-radius: .4em;
+   border-radius: .4em;    
+   padding: 5px;
+}
+
+.game_content{
+      background: #CAE8FF ;
+      padding: 5px;
+}
+
+#timer {
+  color : #fff;
+}
+
+a.variants {
+   text-decoration: none;   
+   color: #fff;
+   font-weight: bold;
+   display: block;
+   text-align: center;
+   background: #0085CC;
+   width: 150px;
+    border: 2px solid #666;
+   -webkit-border-radius: .4em;
+   -moz-border-radius: .4em;
+   border-radius: .4em;    
+   padding: 5px;
+}
+
+a.hint {
+   text-decoration: none;   
+   color: #fff;
+   font-weight: bold;
+   display: block;
+   text-align: center;
+   background: #0085CC;
+   width: 90px;
+    border: 2px solid #666;
+   -webkit-border-radius: .4em;
+   -moz-border-radius: .4em;
+   border-radius: .4em;    
+  margin: 1px 10px 10px;
+}
+
+
+div.game_user_data{
+   color: #fff;
+   background: #0085CC;
+    border: 2px solid #0085CC;;
+   -webkit-border-radius: .4em;
+   -moz-border-radius: .4em;
+   border-radius: .4em;    
+   padding: 5px;
+   font-weight:bold;
+}
+
+
+a.variants:hover {
+   background: #0075CC;
+}
+
+
+.right_answer{
+  background: url('images/right_answer.png');
+  color: #7ED284;
+}
+
+.noright_answer{
+  color: #ff0000;   
+}
+
+
+.top_players {
+  color: #000;
+  background: #ddd;
+  width: 190px;
+  border: 3px solid #666;
+  -webkit-border-radius: .4em;
+  -moz-border-radius: .4em;
+  border-radius: .4em;    
+  padding: 5px;
+}
+

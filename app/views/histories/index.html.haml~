@@ -1,0 +1,15 @@
+=link_to 'очистить', clean_history_url(@a), :confirm => 'Вы уверены?'
+%h1 История альбома
+
+%table
+  %tr
+    %th Событие
+    %th Время
+    %th
+
+  - @histories.each do |history|
+    %tr
+      %td= history.event
+      %td= l history.created_at, :format => :long      
+      %td= link_to 'удалить', history, :confirm => 'Вы уверены?', :method => :delete
+

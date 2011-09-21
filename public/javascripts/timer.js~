@@ -1,0 +1,20 @@
+var timetogo = 30;
+
+
+$.ajax({
+   type: "GET",
+   url: "games",
+   data: "isscript=1"   
+});
+
+
+var timer = window.setInterval(function()
+{    
+    var timertext = document.getElementById("timer");
+    timertext.innerHTML = 'у вас есть ' + timetogo + ' сек';
+    if (timetogo <= 0){
+         window.location.href = "games?next=true";
+         
+    }
+    timetogo--;
+}, 1000);

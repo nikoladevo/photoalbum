@@ -1,0 +1,21 @@
+-if @current_user
+  =link_to "Новый альбом", new_album_path
+%h1 Мои альбомы
+-if @my_albums.size == 0
+  У вас нет ни одного альбома!
+-else
+  -@my_albums.each do |album|
+    =render 'albums/album',:album=>album    
+  =paginate @my_albums
+%br
+%hr
+%br
+
+%h1 Альбомы пользователей
+-@users_albums.map do |user|
+  -if user.albums.size != 0
+    %h4
+      =user.login
+    -user.albums.each do |album|
+      =render 'albums/album',:album=>album      
+

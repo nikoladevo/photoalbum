@@ -1,0 +1,11 @@
+require 'open-uri'
+
+namespace :image do  
+  task :test=>:environment do
+    url="http://st.kinopoisk.ru/im/poster/1/0/5/kinopoisk.ru-Titanic-1058520--o--.jpg"
+    img=open(url)
+    film=Film.find(2)
+    film.cover=img
+    film.save
+  end
+end

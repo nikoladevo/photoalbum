@@ -1,0 +1,7 @@
+-if album.access?(@current_user)
+  =link_to 'удалить', album, :confirm => 'Вы уверены?', :method => :delete
+.film
+  .left=link_to image_tag(album.cover? ? album.cover.url(:thumb) : 'no-album-cover.png'), album
+  .col
+  =link_to album.name, album  
+  .clear

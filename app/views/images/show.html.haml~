@@ -1,0 +1,11 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @image.name
+
+  =image_tag(@image.img? ? @image.img.url(:medium) : 'video.png',:alt=>@image.name)
+
+= link_to 'Edit', edit_image_path(@image)
+\|
+= link_to 'Back', images_path

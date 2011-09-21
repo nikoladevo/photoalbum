@@ -1,0 +1,18 @@
+%h1 История альбома
+
+-if @histories.size == 0
+  пусто
+-else
+  =link_to 'очистить', clean_history_url(@a), :confirm => 'Вы уверены?'
+  %table
+    %tr
+      %th Событие
+      %th Время
+      %th
+
+    - @histories.each do |history|
+      %tr
+        %td= history.event
+        %td= l history.created_at, :format => :long      
+        %td= link_to 'удалить', "histories/#{history.id}", :confirm => 'Вы уверены?', :method => :delete
+

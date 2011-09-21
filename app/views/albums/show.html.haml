@@ -1,0 +1,65 @@
+-if @album.access?(@current_user)
+  = link_to 'Редактировать', edit_album_path(@album)
+  \|
+= link_to 'Назад', albums_path
+%hr
+-if @album_images.size == 0
+  пусто
+  -if @album.access?(@current_user)
+    %hr
+    =image_tag('add_photo.png')  
+    =form_for([@album, @album.images.build], :html=>{:multipart=>true}) do |f|
+      -if @album.errors.any?
+        #error_explanation
+        %h2= "#{pluralize(@image.errors.count, "error")} prohibited this image from being saved:"
+        %ul
+          - @album.errors.full_messages.each do |msg|
+            %li= msg  
+      .field    
+        =f.file_field :img
+        =f.submit 'Загрузить'
+    %hr  
+-else
+  -if @album.access?(@current_user)
+    = link_to "История альбома", album_histories_path(@album) if @album.histories.size != 0
+    \|
+  = link_to "ZIP", @album.bundle_filename if @album_images.size !=0
+  -i = 1
+  %hr
+  -if @album.access?(@current_user)
+    =image_tag('add_photo.png')  
+    =form_for([@album, @album.images.build], :html=>{:multipart=>true}) do |f|    
+      -if @album.errors.any?
+        #error_explanation
+        %h2= "#{pluralize(@image.errors.count, "error")} prohibited this image from being saved:"
+        %ul
+          - @album.errors.full_messages.each do |msg|
+            %li= msg  
+      .field    
+        =f.file_field :img
+        =f.submit 'Загрузить'
+  %hr   
+  -if @album.access?(@current_user)
+    -form_for 'form', :url => "/images/destroy_images" do |f|
+      =f.submit 'удалить выбранные'
+      %table
+        %tr    
+        -@album_images.map do |image|                        
+          -if i % 8 == 0
+            %tr
+          %td      
+            =render 'images/image', :image => image, :album => @album, :f => f
+          -i += 1    
+  -else
+    %table
+      %tr    
+      -@album_images.map do |image|                        
+        -if i % 8 == 0
+          %tr
+        %td      
+          =render 'images/image', :image => image, :album => @album
+        -i += 1    
+
+  =paginate @album_images
+%br
+%hr
